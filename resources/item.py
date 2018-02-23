@@ -3,6 +3,8 @@ from flask_restplus import Resource, reqparse
 from flask_jwt import jwt_required
 from models.item import ItemModel
 
+@api.param('id1', 'class-param: Class-wide description 1')
+@api.param('id2', 'class-param: Class-wide description 2')
 class Item(Resource):
 	TABLE_NAME = 'items'
 
@@ -14,6 +16,9 @@ class Item(Resource):
 	)
 
 	@jwt_required()
+	@api.doc(id='get_something')
+	@api.param('id1', 'method-param: Class-wide description 1')
+	@api.param('id2', 'method-param: Class-wide description 2')
 	def get(self, name):
 		item = ItemModel.find_by_name(name)
 		if item:
