@@ -21,11 +21,8 @@ api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
 api.add_resource(UserRegister, '/register')
 jwt = JWT(app, authenticate, identity) # /auth
-
-def runApp(HOST, PORT):
-	db.init_app(app)
-	app.run(host=HOST, port=PORT, debug=True)
 	
 if __name__ == '__main__':
 	from db import db
-	runApp('localhost', 5000)
+	db.init_app(app)
+	app.run(host='localhost', port=5000, debug=True)
