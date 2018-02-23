@@ -7,14 +7,11 @@ from resources.user import UserRegister
 from resources.item import Item, ItemList
 
 app = Flask(__name__)
+app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # SQLAlchemy has its own tracker, so deactivate Flask tracker
 app.secret_key = 'asdaru347qcnz4r7r8527nftve8'
 api = Api(app)
-
-@app.before_first_request # Flask functionality
-def create_tables():
-	db.create_all()
 
 # ADD RESROUCES
 api.add_resource(Item, '/item/<string:name>')
@@ -25,4 +22,10 @@ jwt = JWT(app, authenticate, identity) # /auth
 if __name__ == '__main__':
 	from db import db
 	db.init_app(app)
-	app.run(host='localhost', port=5000, debug=True)
+
+	if app.config['DEBUG']:
+		@app.before_first_request
+		def create_tables():
+			db.create_all()
+
+	app.run(port=5000)
