@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request
 from flask_restplus import Api
 from flask_jwt import JWT
@@ -8,7 +10,7 @@ from resources.item import Item, ItemList
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db') # 2nd par used when URL not found
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # SQLAlchemy has its own tracker, so deactivate Flask tracker
 app.secret_key = 'asdaru347qcnz4r7r8527nftve8'
 api = Api(app)
